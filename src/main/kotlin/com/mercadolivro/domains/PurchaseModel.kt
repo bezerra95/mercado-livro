@@ -1,7 +1,5 @@
-package com.mercadolivro.model
+package com.mercadolivro.domains
 
-import com.mercadolivro.domains.BookModel
-import com.mercadolivro.domains.CustomerModel
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -25,9 +23,13 @@ data class PurchaseModel(
     )
     val books: MutableList<BookModel>,
 
+
+    @Column
+    val nfe: String? = null,
+
+    @Column
+    val price: BigDecimal,
+
     @Column(name = "create_at")
     val createAt: LocalDateTime = LocalDateTime.now(),
-
-    val nfe: String? = null,
-    val price: BigDecimal
 )
