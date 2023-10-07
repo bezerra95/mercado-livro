@@ -17,7 +17,6 @@ import javax.validation.Valid
 @RequestMapping("books")
 class BookController(
     val bookService: BookService,
-
     val customerService: CustomerService
 ) {
 
@@ -41,7 +40,8 @@ class BookController(
 
     @GetMapping("/{id}")
     fun findByBook(@PathVariable id: Int): BookResponse {
-        val book = bookService.findById(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado")
+        val book = bookService.findById(id)
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado")
 
         return book.toResponse()
     }
@@ -55,7 +55,8 @@ class BookController(
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateBook(@PathVariable id: Int, @RequestBody request: BookRequest) {
-        val book = bookService.findById(id) ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado")
+        val book = bookService.findById(id)
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado")
 
         val bookRequest = request.toBookModel(book.customer!!)
 

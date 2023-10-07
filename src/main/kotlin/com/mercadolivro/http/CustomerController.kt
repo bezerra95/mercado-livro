@@ -51,6 +51,7 @@ class CustomerController (
     fun updateCustomer(@PathVariable id: Int, @Valid @RequestBody request: CustomerRequest): ResponseEntity<CustomerResponse> {
         return try {
             val customer = customerService.getById(id)
+
             customer?.let {
                 customerService.update(id, request.toCustomerModel(customer.id!!))
                 val response = it.toResponse()
@@ -67,6 +68,7 @@ class CustomerController (
     fun delete(@PathVariable id: Int): ResponseEntity<CustomerResponse> {
         return try {
             val customer = customerService.getById(id)
+
             customer?.let {
                 customerService.delete(it.id!!)
                 val response = it.toResponse()
