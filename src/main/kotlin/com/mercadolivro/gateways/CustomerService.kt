@@ -13,7 +13,9 @@ import java.util.*
 @Service
 class CustomerService(
     private val customerRepository: CustomerRepository,
+
     private val bookService: BookService,
+
     private val bCrypt: BCryptPasswordEncoder
 ) {
 
