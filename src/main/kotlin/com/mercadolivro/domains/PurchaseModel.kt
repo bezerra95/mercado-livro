@@ -23,7 +23,6 @@ data class PurchaseModel(
     )
     val books: MutableList<BookModel>,
 
-
     @Column
     val nfe: String? = null,
 
