@@ -40,6 +40,7 @@ class CustomerService(
         existingCustomer.name = customerRequest.name
         existingCustomer.email = customerRequest.email
         existingCustomer.status = existingCustomer.status
+        existingCustomer.password = existingCustomer.password
 
         customerRepository.save(existingCustomer)
     }
