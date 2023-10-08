@@ -4,8 +4,8 @@ import com.mercadolivro.domains.PurchaseModel
 import com.mercadolivro.enums.BookStatus
 import com.mercadolivro.events.PurchaseEvent
 import com.mercadolivro.gateways.mysql.PurchaseRepository
-import org.springframework.stereotype.Service
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.stereotype.Service
 
 @Service
 class PurchaseService (
