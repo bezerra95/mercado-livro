@@ -13,14 +13,18 @@ data class CustomerRequest(
 
     @field:Email(message = "Email must be valid")
     @field:EmailAvailable
-    var email: String
+    var email: String,
+
+    @field: NotEmpty
+    var password: String
 )
 {
     fun toCustomerModel(id: Int?): CustomerModel {
         return CustomerModel(
             name = this.name,
             email = this.email,
-            status = CustomerStatus.ATIVO
+            status = CustomerStatus.ATIVO,
+            password = this.password
         )
     }
 }
