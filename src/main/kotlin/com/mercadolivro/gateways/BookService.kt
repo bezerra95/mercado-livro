@@ -30,7 +30,8 @@ class BookService(
     }
 
     fun findById(id: Int): BookModel? {
-        return bookRespository.findById(id).orElseThrow{ NotFoundException(Errors.ML101.message.format(id), Errors.ML101.code)}
+        return bookRespository.findById(id).
+        orElseThrow{ NotFoundException(Errors.ML101.message.format(id), Errors.ML101.code)}
     }
 
     fun delete(id: Int) {
@@ -60,5 +61,12 @@ class BookService(
 
     fun findAllByIds(bookIds: Set<Int>): List<BookModel> {
         return bookRespository.findAllById(bookIds)
+    }
+
+    fun purchase(books: MutableList<BookModel>) {
+        books.map {
+            it.status = BookStatus.VENDIDO
+        }
+        bookRespository.saveAll(books)
     }
 }
