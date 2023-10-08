@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 @Service
 
 class BookService(
-    val bookRespository: BookRepository
+    private val bookRespository: BookRepository
 ) {
 
     fun create(book: BookModel) {
