@@ -35,7 +35,7 @@ class BookService(
     }
 
     fun delete(id: Int) {
-        val book = findById(id) ?:throw Exception("Livro não encontrado")
+        val book = findById(id) ?: throw Exception("Book not found")
 
         book.status = BookStatus.DELETADO
 
