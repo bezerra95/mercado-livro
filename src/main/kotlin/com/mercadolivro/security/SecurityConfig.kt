@@ -1,17 +1,21 @@
 package com.mercadolivro.security
 
+import com.mercadolivro.gateways.UserDetailsCustomerService
 import com.mercadolivro.gateways.mysql.CustomerRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.web.access.intercept.AuthorizationFilter
 
 @Configuration
 class SecurityConfig(
     private val customerRepository: CustomerRepository,
+    private val userDetails: UserDetailsCustomerService,
 ): WebSecurityConfigurerAdapter() {
 
     private val PUBLIC_MATCHERS = arrayOf<String>()
@@ -20,6 +24,11 @@ class SecurityConfig(
         "/customers",
         "/book"
     )
+
+    override fun configure(auth: AuthenticationManagerBuilder) {
+        auth.userDetailsService(userDetails).passwordEncoder(BCryptPasswordEncoder())
+    }
+
     override fun configure(http: HttpSecurity) {
         http.cors().and().csrf().disable()
         http.authorizeRequests()
