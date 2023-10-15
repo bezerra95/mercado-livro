@@ -46,7 +46,9 @@ class CustomerService(
         if (existingCustomerOptional.isEmpty) {
             throw NoSuchElementException("Customer with ID $id not found")
         }
+
         val existingCustomer: CustomerModel = existingCustomerOptional.get()
+
         existingCustomer.name = customerRequest.name
         existingCustomer.email = customerRequest.email
         existingCustomer.status = existingCustomer.status
@@ -65,7 +67,7 @@ class CustomerService(
 
         customer!!.status = CustomerStatus.INATIVO
 
-       customerRepository.save(customer)
+        customerRepository.save(customer)
     }
 
     fun emailAvailable(email: String): Boolean {

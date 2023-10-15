@@ -23,11 +23,11 @@ class CustomerController (
     @GetMapping("/{id}")
     fun getCustomer(@PathVariable id: Int): ResponseEntity<CustomerResponse> {
         return try {
-            val customer = customerService.getById(id)
-            customer?.let {
-                val response = it.toResponse()
-                ResponseEntity.ok(response)
-            } ?: ResponseEntity.notFound().build()
+            val customer = customerService.getById(id) ?: return ResponseEntity.notFound().build()
+
+            val response = customer.toResponse()
+
+            return ResponseEntity.ok(response)
 
         } catch (ex: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
@@ -39,6 +39,7 @@ class CustomerController (
     fun createCustomer(@RequestBody @Valid request: CustomerRequest): ResponseEntity<CustomerResponse> {
         return try {
             customerService.create(request.toCustomerModel(null))
+
             ResponseEntity.status(HttpStatus.CREATED).build()
 
         } catch (ex: Exception) {
@@ -48,16 +49,19 @@ class CustomerController (
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateCustomer(@PathVariable id: Int, @Valid @RequestBody request: CustomerRequest): ResponseEntity<CustomerResponse> {
+    fun updateCustomer(
+        @PathVariable id: Int,
+        @Valid @RequestBody request: CustomerRequest
+    ): ResponseEntity<CustomerResponse> {
         return try {
-            val customer = customerService.getById(id)
+            val customer = customerService.getById(id)  ?: return ResponseEntity.notFound().build()
 
-            customer?.let {
-                customerService.update(id, request.toCustomerModel(customer.id!!))
-                val response = it.toResponse()
-                ResponseEntity.ok(response)
-            } ?: ResponseEntity.notFound().build()
-
+            customerService.update(id, request.toCustomerModel(customer.id!!))
+            
+            val response = customer.toResponse()
+            
+            return ResponseEntity.ok(response)
+            
         } catch (ex: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
         }
@@ -67,14 +71,14 @@ class CustomerController (
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun delete(@PathVariable id: Int): ResponseEntity<CustomerResponse> {
         return try {
-            val customer = customerService.getById(id)
+            val customer = customerService.getById(id) ?: return ResponseEntity.notFound().build()
 
-            customer?.let {
-                customerService.delete(it.id!!)
-                val response = it.toResponse()
-                ResponseEntity.ok(response)
-            } ?: ResponseEntity.notFound().build()
+            customerService.delete(customer.id!!)
 
+            val response = customer.toResponse()
+           
+            return ResponseEntity.ok(response)
+       
         } catch (ex: Exception) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).build()
         }

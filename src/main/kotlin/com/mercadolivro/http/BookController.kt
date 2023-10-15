@@ -23,7 +23,7 @@ class BookController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody @Valid request: BookRequest) {
-       val customer = customerService.getById(request.customerId)
+        val customer = customerService.getById(request.customerId)
 
         bookService.create(request.toBookModel(customer!!))
     }
@@ -41,7 +41,7 @@ class BookController(
     @GetMapping("/{id}")
     fun findByBook(@PathVariable id: Int): BookResponse {
         val book = bookService.findById(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado")
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found")
 
         return book.toResponse()
     }
@@ -56,7 +56,7 @@ class BookController(
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateBook(@PathVariable id: Int, @RequestBody request: BookRequest) {
         val book = bookService.findById(id)
-            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado")
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found")
 
         val bookRequest = request.toBookModel(book.customer!!)
 
