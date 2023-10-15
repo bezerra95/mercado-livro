@@ -1,5 +1,6 @@
 package com.mercadolivro.security
 
+import com.mercadolivro.enums.Role
 import com.mercadolivro.gateways.UserDetailsCustomerService
 import com.mercadolivro.gateways.mysql.CustomerRepository
 import org.springframework.context.annotation.Bean
@@ -25,6 +26,10 @@ class SecurityConfig(
         "/book"
     )
 
+    private val ADMIN_MATCHERS = arrayOf(
+        "/admin/**"
+    )
+
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(userDetails).passwordEncoder(BCryptPasswordEncoder())
     }
@@ -34,6 +39,7 @@ class SecurityConfig(
         http.authorizeRequests()
             .antMatchers(*PUBLIC_MATCHERS).permitAll()
             .antMatchers(HttpMethod.POST,*PUBLIC_POST_MATCHERS).permitAll()
+            .antMatchers(*ADMIN_MATCHERS).hasAuthority(Role.ADMIN.description)
             .anyRequest().authenticated()
         http.addFilter(AuthenticationFilter(authenticationManager(), customerRepository, jwtUtil))
         http.addFilter(AuthorizationFilter(authenticationManager(), userDetails, jwtUtil))
