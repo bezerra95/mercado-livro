@@ -36,6 +36,7 @@ class SecurityConfig(
             .antMatchers(HttpMethod.POST,*PUBLIC_POST_MATCHERS).permitAll()
             .anyRequest().authenticated()
         http.addFilter(AuthenticationFilter(authenticationManager(), customerRepository, jwtUtil))
+        http.addFilter(AuthorizationFilter(authenticationManager(), userDetails, jwtUtil))
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
         @Bean
