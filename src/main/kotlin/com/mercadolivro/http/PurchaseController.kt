@@ -18,7 +18,8 @@ class PurchaseController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun purchase(@RequestBody request: PurchaseRequest){
-        val books = bookService.findAllByIds(request.bookIds)
+        bookService.findAllByIds(request.bookIds)
+
         purchaseService.create(purchaseMapper.toModel(request))
     }
 }

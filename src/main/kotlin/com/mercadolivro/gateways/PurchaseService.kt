@@ -23,12 +23,11 @@ class PurchaseService (
 
                 applicationEventPublisher.publishEvent(PurchaseEvent(this, purchaseModel))
             }
-            print("não foi vendido")
+            print("was not sold")
         }
     }
 
     fun update(purchaseModel: PurchaseModel) {
         purchaseRepository.save(purchaseModel)
-
     }
 }
