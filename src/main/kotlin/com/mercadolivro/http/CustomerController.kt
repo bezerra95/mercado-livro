@@ -4,8 +4,10 @@ import com.mercadolivro.gateways.CustomerService
 import com.mercadolivro.http.request.CustomerRequest
 import com.mercadolivro.http.response.CustomerResponse
 import com.mercadolivro.http.response.toResponse
+import com.mercadolivro.security.UserCaOnlyAccessTheirOwnResource
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
@@ -16,11 +18,13 @@ class CustomerController (
 ) {
 
     @GetMapping
+    @UserCaOnlyAccessTheirOwnResource
     fun getAllCustomers(@RequestParam name: String?): List<CustomerResponse> {
         return customerService.getAllCustomersByName(name).map { it.toResponse() }
     }
 
     @GetMapping("/{id}")
+    @UserCaOnlyAccessTheirOwnResource
     fun getCustomer(@PathVariable id: Int): ResponseEntity<CustomerResponse> {
         return try {
             val customer = customerService.getById(id) ?: return ResponseEntity.notFound().build()
@@ -49,6 +53,7 @@ class CustomerController (
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @UserCaOnlyAccessTheirOwnResource
     fun updateCustomer(
         @PathVariable id: Int,
         @Valid @RequestBody request: CustomerRequest
