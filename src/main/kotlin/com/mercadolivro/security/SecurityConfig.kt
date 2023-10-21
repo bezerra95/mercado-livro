@@ -20,7 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 class SecurityConfig(
     private val customerRepository: CustomerRepository,
     private val userDetails: UserDetailsCustomerService,
-    private val jwtUtil: JwtUtil
+    private val jwtUtil: JwtUtil,
+    private val customEntryPoint: CustomAuthenticationEntryPoint
 ): WebSecurityConfigurerAdapter() {
 
     private val PUBLIC_MATCHERS = arrayOf<String>()
@@ -48,6 +49,7 @@ class SecurityConfig(
         http.addFilter(AuthenticationFilter(authenticationManager(), customerRepository, jwtUtil))
         http.addFilter(AuthorizationFilter(authenticationManager(), userDetails, jwtUtil))
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        http.exceptionHandling().authenticationEntryPoint(customEntryPoint)
 
         @Bean
         fun bCryptPasswordEncoder(): BCryptPasswordEncoder{
