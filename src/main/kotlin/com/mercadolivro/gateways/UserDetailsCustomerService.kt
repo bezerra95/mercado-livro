@@ -17,5 +17,4 @@ class UserDetailsCustomerService(
             .orElseThrow{ AuthenticationException("Usuário não encontrado", "999") }
         return UserCustomDetails(customer)
     }
-
 }
