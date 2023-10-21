@@ -4,6 +4,8 @@ import com.mercadolivro.gateways.BookService
 import com.mercadolivro.gateways.CustomerService
 import com.mercadolivro.http.request.BookRequest
 import com.mercadolivro.http.response.BookResponse
+import com.mercadolivro.http.response.PageResponse
+import com.mercadolivro.http.response.toPageResponse
 import com.mercadolivro.http.response.toResponse
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -29,13 +31,13 @@ class BookController(
     }
 
     @GetMapping
-    fun getAllBooks(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<BookResponse> {
-        return bookService.getAllBooks(pageable).map { it.toResponse()}
+    fun getAllBooks(@PageableDefault(page = 0, size = 10) pageable: Pageable): PageResponse<BookResponse> {
+        return bookService.getAllBooks(pageable).map { it.toResponse()}.toPageResponse()
     }
 
     @GetMapping("/actives")
-    fun findByActives(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<BookResponse> {
-        return bookService.findActives(pageable).map { it.toResponse()}
+    fun findByActives(@PageableDefault(page = 0, size = 10) pageable: Pageable): PageResponse<BookResponse> {
+        return bookService.findActives(pageable).map { it.toResponse()}.toPageResponse()
     }
 
     @GetMapping("/{id}")
